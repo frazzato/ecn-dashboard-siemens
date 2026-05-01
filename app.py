@@ -6,20 +6,38 @@ import plotly.express as px
 st.set_page_config(page_title="TeamCenter ECN Dashboard", layout="wide", initial_sidebar_state="collapsed")
 st.title("⚙️ Engineering Change Notice Dashboard")
 
-# 2. Data Loading & Cleaning (Same robust logic)
+# 2. Data Loading & Cleaning
 @st.cache_data
 def load_and_clean_data():
     df = pd.read_csv("teamcenter_data.csv")
     df.columns = df.columns.str.strip()
     
+    # 🌟 NEW: Dictionary Mapping for Human-Readable Phase Names
+    phase_mapping = {
+        '-2': 'Engineering',
+        '-1': 'Engineering',
+        '0': 'Cancelled',
+        '4': 'Purchase',
+        '5': 'Cost',
+        '6': 'Business',
+        '7': 'P.O Creating',
+        '8': 'Closed'
+    }
+    
     def determine_status(level):
         lvl_str = str(level).strip()
-        if lvl_str == '8': return 'Closed'
-        else: return f'Open (Phase {lvl_str})'
+        # Apply the descriptive name if it exists in our map, else fallback to "Phase X"
+        if lvl_str in phase_mapping:
+            return phase_mapping[lvl_str]
+        else:
+            return f"Phase {lvl_str}"
             
     df['Dashboard_Status'] = df['Status Lvl'].apply(determine_status)
+    
+    # Core Rule remains strictly enforced: Only 'Closed' (Level 8) is fully closed.
     df['Primary_Status'] = df['Dashboard_Status'].apply(lambda x: 'Closed' if x == 'Closed' else 'Open')
     
+    # Cycle Time Logic
     df['Creation Date'] = pd.to_datetime(df['Creation Date'], errors='coerce')
     df['Date Modified'] = pd.to_datetime(df['Date Modified'], errors='coerce')
     now = pd.Timestamp.now()
@@ -34,16 +52,13 @@ except FileNotFoundError:
     st.error("Data file 'teamcenter_data.csv' not found. Please upload it to your repository.")
     st.stop()
 
-# 3. THE NEW UI: Horizontal Filter Ribbon
+# 3. Horizontal Filter Ribbon
 st.markdown("### 🔍 Global Filters")
-
-# Create a row of 5 columns for our sleek buttons
 f_col1, f_col2, f_col3, f_col4, f_col5 = st.columns(5)
 
 with f_col1:
     search_query = st.text_input("Search", "", placeholder="Search ECN or Keyword...", label_visibility="collapsed")
 
-# Using st.popover to create clean, drop-down checkboxes instead of messy tags
 with f_col2:
     with st.popover("📂 Status Phase", use_container_width=True):
         status_options = sorted(df['Dashboard_Status'].unique())
