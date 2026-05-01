@@ -1,20 +1,17 @@
 import streamlit as st
 import pandas as pd
 import plotly.express as px
-from datetime import datetime
 
 # 1. Page Configuration
-st.set_page_config(page_title="TeamCenter ECN Dashboard", layout="wide")
+st.set_page_config(page_title="TeamCenter ECN Dashboard", layout="wide", initial_sidebar_state="collapsed")
 st.title("⚙️ Engineering Change Notice Dashboard")
-st.markdown("Live view of Siemens TeamCenter exports with cycle time analytics.")
 
-# 2. Data Loading & Cleaning
+# 2. Data Loading & Cleaning (Same robust logic)
 @st.cache_data
 def load_and_clean_data():
     df = pd.read_csv("teamcenter_data.csv")
     df.columns = df.columns.str.strip()
     
-    # Custom Status Logic
     def determine_status(level):
         lvl_str = str(level).strip()
         if lvl_str == '8': return 'Closed'
@@ -23,17 +20,11 @@ def load_and_clean_data():
     df['Dashboard_Status'] = df['Status Lvl'].apply(determine_status)
     df['Primary_Status'] = df['Dashboard_Status'].apply(lambda x: 'Closed' if x == 'Closed' else 'Open')
     
-    # Cycle Time Calculation
-    # Convert dates to datetime objects
     df['Creation Date'] = pd.to_datetime(df['Creation Date'], errors='coerce')
     df['Date Modified'] = pd.to_datetime(df['Date Modified'], errors='coerce')
-    
-    # If closed, age is (Date Modified - Creation). If open, age is (Today - Creation).
     now = pd.Timestamp.now()
     df['End Date'] = df.apply(lambda x: x['Date Modified'] if x['Primary_Status'] == 'Closed' else now, axis=1)
-    df['Days Open'] = (df['End Date'] - df['Creation Date']).dt.days
-    # Fill any missing/negative values with 0
-    df['Days Open'] = df['Days Open'].fillna(0).clip(lower=0).astype(int)
+    df['Days Open'] = (df['End Date'] - df['Creation Date']).dt.days.fillna(0).clip(lower=0).astype(int)
     
     return df
 
@@ -43,24 +34,38 @@ except FileNotFoundError:
     st.error("Data file 'teamcenter_data.csv' not found. Please upload it to your repository.")
     st.stop()
 
-# 3. Enterprise Sidebar Filters
-st.sidebar.header("🔍 Global Search & Filter")
-search_query = st.sidebar.text_input("Search ECN, Program, or Keyword", "")
+# 3. THE NEW UI: Horizontal Filter Ribbon
+st.markdown("### 🔍 Global Filters")
 
-with st.sidebar.expander("📂 Status", expanded=True):
-    selected_primary_status = st.multiselect("Open / Closed", sorted(df['Primary_Status'].unique()), default=sorted(df['Primary_Status'].unique()))
-    selected_detailed_status = st.multiselect("Phase Level", sorted(df['Dashboard_Status'].unique()), default=sorted(df['Dashboard_Status'].unique()))
+# Create a row of 5 columns for our sleek buttons
+f_col1, f_col2, f_col3, f_col4, f_col5 = st.columns(5)
 
-with st.sidebar.expander("🏢 Organization", expanded=False):
-    selected_divisions = st.multiselect("Division", sorted(df['Division'].dropna().unique()), default=sorted(df['Division'].dropna().unique()))
-    selected_owners = st.multiselect("Owning User", sorted(df['Owner'].dropna().unique()), default=sorted(df['Owner'].dropna().unique()))
+with f_col1:
+    search_query = st.text_input("Search", "", placeholder="Search ECN or Keyword...", label_visibility="collapsed")
 
-with st.sidebar.expander("📁 Item Revision / Program", expanded=False):
-    selected_programs = st.multiselect("Program Code", sorted(df['Program Code'].dropna().unique()), default=sorted(df['Program Code'].dropna().unique()))
+# Using st.popover to create clean, drop-down checkboxes instead of messy tags
+with f_col2:
+    with st.popover("📂 Status Phase", use_container_width=True):
+        status_options = sorted(df['Dashboard_Status'].unique())
+        selected_detailed_status = [stat for stat in status_options if st.checkbox(stat, value=True)]
+
+with f_col3:
+    with st.popover("🏢 Division", use_container_width=True):
+        div_options = sorted(df['Division'].dropna().unique())
+        selected_divisions = [div for div in div_options if st.checkbox(div, value=True)]
+
+with f_col4:
+    with st.popover("👤 Owner", use_container_width=True):
+        owner_options = sorted(df['Owner'].dropna().unique())
+        selected_owners = [own for own in owner_options if st.checkbox(own, value=True)]
+
+with f_col5:
+    with st.popover("📁 Program", use_container_width=True):
+        prog_options = sorted(df['Program Code'].dropna().unique())
+        selected_programs = [prog for prog in prog_options if st.checkbox(prog, value=True)]
 
 # Apply Filters
 filtered_df = df[
-    (df['Primary_Status'].isin(selected_primary_status)) &
     (df['Dashboard_Status'].isin(selected_detailed_status)) &
     (df['Division'].isin(selected_divisions)) &
     (df['Owner'].isin(selected_owners)) &
@@ -75,66 +80,43 @@ if search_query:
     )
     filtered_df = filtered_df[mask]
 
-# 4. High-Level Metrics (Now with Cycle Time)
-st.subheader("KPI Overview")
-col1, col2, col3, col4 = st.columns(4)
+st.divider()
 
+# 4. Metrics & Charts Layout
+col1, col2, col3, col4 = st.columns(4)
 total_ecns = len(filtered_df)
-open_ecns = len(filtered_df[filtered_df['Primary_Status'] == 'Open'])
-closed_ecns = len(filtered_df[filtered_df['Primary_Status'] == 'Closed'])
-# Calculate Average Days Open for currently filtered active ECNs
 open_df = filtered_df[filtered_df['Primary_Status'] == 'Open']
+open_ecns = len(open_df)
+closed_ecns = len(filtered_df[filtered_df['Primary_Status'] == 'Closed'])
 avg_days = open_df['Days Open'].mean() if not open_df.empty else 0
 
 col1.metric("Total ECNs", total_ecns)
 col2.metric("Active ECNs", open_ecns)
 col3.metric("Closed ECNs", closed_ecns)
-col4.metric("Avg Aging (Active)", f"{avg_days:.1f} Days", help="Average days open for active ECNs")
+col4.metric("Avg Aging (Active)", f"{avg_days:.1f} Days")
 
-st.divider()
+st.markdown("---")
 
-# 5. Dynamic Interactive Charts (Plotly)
-st.subheader("📊 Cycle Time & Workload Analytics")
+# Charts Side-by-Side
 chart_col1, chart_col2 = st.columns(2)
-
 with chart_col1:
-    st.markdown("**Bottleneck Analysis: Avg Days Open by Phase**")
+    st.markdown("**Avg Days Open by Phase**")
     if not open_df.empty:
-        # Group by phase and calculate average age
         phase_aging = open_df.groupby('Dashboard_Status')['Days Open'].mean().reset_index()
-        fig1 = px.bar(
-            phase_aging, x='Dashboard_Status', y='Days Open', 
-            color='Dashboard_Status', text_auto='.1f',
-            labels={'Dashboard_Status': 'Phase', 'Days Open': 'Avg Days Open'}
-        )
-        fig1.update_layout(showlegend=False, margin=dict(t=10, b=10, l=10, r=10))
+        fig1 = px.bar(phase_aging, x='Dashboard_Status', y='Days Open', text_auto='.1f')
+        fig1.update_layout(showlegend=False, margin=dict(t=0, b=0, l=0, r=0), height=300)
         st.plotly_chart(fig1, use_container_width=True)
-    else:
-        st.info("No active ECNs match the current filter.")
 
 with chart_col2:
-    st.markdown("**Workload Distribution: Active ECNs by Program**")
+    st.markdown("**Active ECNs by Program**")
     if not open_df.empty:
-        fig2 = px.pie(
-            open_df, names='Program Code', hole=0.4, 
-            color_discrete_sequence=px.colors.qualitative.Prism
-        )
-        fig2.update_layout(margin=dict(t=10, b=10, l=10, r=10))
+        fig2 = px.pie(open_df, names='Program Code', hole=0.4)
+        fig2.update_layout(margin=dict(t=0, b=0, l=0, r=0), height=300)
         st.plotly_chart(fig2, use_container_width=True)
-    else:
-        st.info("No active ECNs match the current filter.")
 
 st.divider()
 
-# 6. Clean Data View
+# 5. Clean Data View
 st.subheader("ECN Tracking Log")
-columns_to_display = [
-    'ECN Number', 'Program Code', 'Dashboard_Status', 
-    'Days Open', 'Description', 'Division', 'Owner'
-]
-
-st.dataframe(
-    filtered_df[columns_to_display],
-    use_container_width=True,
-    hide_index=True
-)
+columns_to_display = ['ECN Number', 'Program Code', 'Dashboard_Status', 'Days Open', 'Description', 'Division', 'Owner']
+st.dataframe(filtered_df[columns_to_display], use_container_width=True, hide_index=True)
