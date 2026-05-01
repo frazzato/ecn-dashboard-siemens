@@ -1,0 +1,74 @@
+﻿ID,ECN Number,Program Code,Description,Creation Date, Status Lvl,Division,Checked-Out,Type,Group ID,Date Modified,Cancelled,Owner
+1,510001,T100,Add foam pad to reduce vibration on front module,1/10/2025 9:15,-2,North America,Engineering,ECN,Module,1/10/2025 10:05,,Alex Turner
+2,510002,T100,Reinforce clip tower on side panel,1/12/2025 14:22,-1,South America,Engineering,ECN,Panel,1/12/2025 15:00,,Maria Lopez
+3,510003,T100,Add felt tape to hinge area for noise reduction,1/15/2025 8:40,0,Europe,Engineering,ECN,Interior,1/16/2025 11:10,Yes,Chris Young
+4,510004,R250,Change supplier for fastener type F330,1/18/2025 13:05,4,North America,Engineering,ECN,Fastener,1/19/2025 9:45,,Taylor Reed
+5,510005,R250,Price update for decorative trim component,1/20/2025 10:30,5,South America,Engineering,ECN,Trim,1/22/2025 16:20,,Taylor Reed
+6,510006,R250,MOQ update for foam pad FP-22,1/22/2025 9:55,6,Asia Pacific,Engineering,ECN,Interior,1/25/2025 8:35,,Taylor Reed
+7,510007,R250,Create PO for bracket assembly BA-10,1/24/2025 11:05,7,North America,Engineering,ECN,Assembly,1/27/2025 13:00,,Taylor Reed
+8,510008,R250,Finalize BOM after validation testing,1/26/2025 15:45,8,South America,Engineering,ECN,Assembly,1/30/2025 9:10,,Taylor Reed
+9,510009,Q380,Update lamp bracket geometry for overhead module,2/1/2025 10:12,A,North America,Engineering,ECN,Lighting,2/10/2025 14:30,,Jordan Blake
+10,510010,Q380,Remove unused clip after BOM audit,2/3/2025 9:00,-2,Europe,Engineering,ECN,Panel,2/3/2025 9:40,,Sam Carter
+11,510011,Q380,Update customer-facing part reference for panel,2/5/2025 13:25,-1,South America,Engineering,ECN,Panel,2/5/2025 13:50,,Sam Carter
+12,510012,Q380,Cancel ECN due to customer withdrawal,2/6/2025 8:10,0,North America,Engineering,ECN,Panel,2/7/2025 10:00,Yes,Sam Carter
+13,510013,T100,Color change for microphone cover component,2/8/2025 11:45,4,South America,Engineering,ECN,Interior,2/9/2025 15:20,,Sam Carter
+14,510014,T100,Price update for wiring harness WH-44,2/10/2025 16:05,5,Asia Pacific,Engineering,ECN,Electrical,2/12/2025 9:55,,Sam Carter
+15,510015,T100,MOQ update for lamp carrier LC-12,2/13/2025 10:30,6,North America,Engineering,ECN,Lighting,2/15/2025 8:45,,Sam Carter
+16,510016,T100,PO creation for foam pad FP-90,2/16/2025 9:20,7,South America,Engineering,ECN,Interior,2/18/2025 14:05,,Sam Carter
+17,510017,T100,Implementation complete for overhead module update,2/18/2025 15:40,8,Europe,Engineering,ECN,Lighting,2/21/2025 10:10,,Sam Carter
+18,510018,R250,Change vinyl supplier for panel VP-77,2/20/2025 8:55,-1,North America,Engineering,ECN,Panel,2/20/2025 9:30,,Alex Turner
+19,510019,R250,Release new logo projector LP-20 with new vendor,2/22/2025 13:18,0,South America,Engineering,ECN,Lighting,2/23/2025 11:00,Yes,Alex Turner
+20,510020,R250,Cost update after sourcing review for LP-20,2/24/2025 9:47,5,Asia Pacific,Engineering,ECN,Lighting,2/26/2025 16:40,,Alex Turner
+21,510021,Q380,Add NVH pad to load floor module,3/1/2025 10:05,-2,North America,Engineering,ECN,Interior,3/1/2025 11:00,,Jamie Ross
+22,510022,Q380,Price update based on RFQ for NVH pad,3/3/2025 14:22,4,South America,Engineering,ECN,Interior,3/4/2025 9:35,,Jamie Ross
+23,510023,Q380,PO creation for NVH pad NP-55,3/5/2025 8:50,7,Europe,Engineering,ECN,Interior,3/6/2025 13:10,,Jamie Ross
+24,510024,Q380,Implementation complete for NVH update,3/7/2025 15:30,8,North America,Engineering,ECN,Interior,3/10/2025 10:25,,Jamie Ross
+25,510025,T100,Correct plant part number for harness HN-33,3/9/2025 9:12,-1,Asia Pacific,Engineering,ECN,Electrical,3/9/2025 9:50,,Jordan Blake
+26,510026,T100,Price change for harness HN-33,3/11/2025 11:40,5,South America,Engineering,ECN,Electrical,3/13/2025 8:55,,Jordan Blake
+27,510027,T100,MOQ update for felt tape FT-10,3/13/2025 13:05,6,North America,Engineering,ECN,Interior,3/15/2025 10:40,,Jordan Blake
+28,510028,T100,PO creation for harness HN-33,3/16/2025 10:25,7,Europe,Engineering,ECN,Electrical,3/18/2025 14:30,,Jordan Blake
+29,510029,T100,Implementation complete for harness update,3/18/2025 15:55,8,South America,Engineering,ECN,Electrical,3/21/2025 9:05,,Jordan Blake
+30,510030,R250,Price change for connected light module CL-50,3/20/2025 9:33,8,North America,Engineering,ECN,Lighting,3/25/2025 12:10,,Taylor Reed
+31,510031,R250,RFQ opened for connected light module CL-50,3/18/2025 8:20,4,South America,Engineering,ECN,Lighting,3/19/2025 16:00,,Taylor Reed
+32,510032,R250,Cost review for connected light module CL-50,3/19/2025 10:45,5,Asia Pacific,Engineering,ECN,Lighting,3/21/2025 11:30,,Taylor Reed
+33,510033,R250,MOQ alignment for connected light module CL-50,3/21/2025 13:10,6,North America,Engineering,ECN,Lighting,3/23/2025 9:20,,Taylor Reed
+34,510034,R250,PO creation for connected light module CL-50,3/23/2025 15:05,7,South America,Engineering,ECN,Lighting,3/24/2025 14:00,,Taylor Reed
+35,510035,Q380,Documentation-only removal of screw SC-12,3/26/2025 9:00,0,Europe,Engineering,ECN,Panel,3/26/2025 9:45,Yes,Sam Carter
+36,510036,Q380,Implementation of documentation-only change SC-12,3/28/2025 10:30,8,North America,Engineering,ECN,Panel,4/1/2025 11:15,,Sam Carter
+37,510037,Q380,Lamp process change from 3 cycles to 2 cycles,4/2/2025 8:55,A,South America,Engineering,ECN,Lighting,4/10/2025 10:40,,Jordan Blake
+38,510038,Q380,Lamp supplier change to new vendor LV-88,4/5/2025 11:22,-1,Asia Pacific,Engineering,ECN,Lighting,4/5/2025 11:50,,Jordan Blake
+39,510039,Q380,PO creation for lamp LV-88,4/7/2025 9:40,7,North America,Engineering,ECN,Lighting,4/9/2025 13:25,,Jordan Blake
+40,510040,Q380,Implementation complete for lamp LV-88,4/9/2025 15:10,8,South America,Engineering,ECN,Lighting,4/12/2025 9:35,,Jordan Blake
+41,510041,T100,Add structural rib to reduce flex in module housing,4/13/2025 9:20,-2,Europe,Engineering,ECN,Module,4/13/2025 10:00,,Alex Turner
+42,510042,T100,Update adhesive spec for bonding process,4/14/2025 14:10,-1,North America,Engineering,ECN,Process,4/14/2025 15:00,,Maria Lopez
+43,510043,T100,Cancel ECN due to duplicate request,4/15/2025 8:55,0,South America,Engineering,ECN,Admin,4/15/2025 9:30,Yes,Chris Young
+44,510044,R250,Add new supplier qualification for bracket BR-22,4/16/2025 11:40,4,Asia Pacific,Engineering,ECN,Supplier,4/17/2025 8:50,,Taylor Reed
+45,510045,R250,Cost update for bracket BR-22,4/17/2025 13:25,5,North America,Engineering,ECN,Supplier,4/18/2025 10:15,,Taylor Reed
+46,510046,R250,MOQ update for bracket BR-22,4/18/2025 15:10,6,South America,Engineering,ECN,Supplier,4/19/2025 9:40,,Taylor Reed
+47,510047,R250,PO creation for bracket BR-22,4/19/2025 16:30,7,Europe,Engineering,ECN,Supplier,4/20/2025 11:00,,Taylor Reed
+48,510048,R250,Implementation complete for bracket BR-22,4/20/2025 9:50,8,North America,Engineering,ECN,Supplier,4/22/2025 14:30,,Taylor Reed
+49,510049,Q380,Add insulation layer to overhead module,4/21/2025 10:15,A,South America,Engineering,ECN,Interior,4/30/2025 12:00,,Jordan Blake
+50,510050,Q380,Update wiring routing for overhead module,4/22/2025 11:40,-2,Asia Pacific,Engineering,ECN,Electrical,4/22/2025 12:30,,Sam Carter
+51,510051,Q380,Add new connector spec CN-55,4/23/2025 9:25,-1,North America,Engineering,ECN,Electrical,4/23/2025 10:00,,Sam Carter
+52,510052,Q380,Cancel ECN due to design freeze,4/24/2025 8:10,0,South America,Engineering,ECN,Design,4/24/2025 9:00,Yes,Sam Carter
+53,510053,T100,Update surface finish requirement for trim part,4/25/2025 14:20,4,Europe,Engineering,ECN,Trim,4/26/2025 10:10,,Sam Carter
+54,510054,T100,Cost update for trim part TP-88,4/26/2025 15:40,5,North America,Engineering,ECN,Trim,4/27/2025 11:00,,Sam Carter
+55,510055,T100,MOQ update for trim part TP-88,4/27/2025 16:55,6,South America,Engineering,ECN,Trim,4/28/2025 9:30,,Sam Carter
+56,510056,T100,PO creation for trim part TP-88,4/28/2025 10:40,7,Asia Pacific,Engineering,ECN,Trim,4/29/2025 14:00,,Sam Carter
+57,510057,T100,Implementation complete for trim part TP-88,4/29/2025 12:15,8,North America,Engineering,ECN,Trim,5/1/2025 9:00,,Sam Carter
+58,510058,R250,Add reinforcement to bracket BR-90,5/1/2025 9:30,-2,South America,Engineering,ECN,Bracket,5/1/2025 10:00,,Alex Turner
+59,510059,R250,Update torque spec for fastener FS-10,5/2/2025 11:10,-1,Europe,Engineering,ECN,Fastener,5/2/2025 12:00,,Maria Lopez
+60,510060,R250,Cancel ECN due to incorrect data,5/3/2025 8:45,0,North America,Engineering,ECN,Admin,5/3/2025 9:20,Yes,Chris Young
+61,510061,Q380,Add new foam pad FP-77 for noise reduction,5/4/2025 10:50,4,South America,Engineering,ECN,Interior,5/5/2025 9:40,,Taylor Reed
+62,510062,Q380,Cost update for foam pad FP-77,5/5/2025 14:30,5,Asia Pacific,Engineering,ECN,Interior,5/6/2025 10:20,,Taylor Reed
+63,510063,Q380,MOQ update for foam pad FP-77,5/6/2025 15:40,6,North America,Engineering,ECN,Interior,5/7/2025 8:50,,Taylor Reed
+64,510064,Q380,PO creation for foam pad FP-77,5/7/2025 16:10,7,South America,Engineering,ECN,Interior,5/8/2025 11:30,,Taylor Reed
+65,510065,Q380,Implementation complete for foam pad FP-77,5/8/2025 12:45,8,Europe,Engineering,ECN,Interior,5/10/2025 9:00,,Taylor Reed
+66,510066,T100,Add new clip design CL-12,5/9/2025 9:20,A,North America,Engineering,ECN,Clip,5/15/2025 14:00,,Jordan Blake
+67,510067,T100,Update clip material spec,5/10/2025 10:40,-2,South America,Engineering,ECN,Clip,5/10/2025 11:20,,Sam Carter
+68,510068,T100,Add new adhesive AD-44,5/11/2025 11:55,-1,Asia Pacific,Engineering,ECN,Adhesive,5/11/2025 12:30,,Sam Carter
+69,510069,T100,Cancel ECN due to supplier issue,5/12/2025 8:30,0,North America,Engineering,ECN,Supplier,5/12/2025 9:10,Yes,Sam Carter
+70,510070,R250,Add new bracket BR-55,5/13/2025 14:10,4,South America,Engineering,ECN,Bracket,5/14/2025 10:00,,Sam Carter
+71,510071,R250,Cost update for bracket BR-55,5/14/2025 15:30,5,Asia Pacific,Engineering,ECN,Bracket,5/15/2025 9:40,,Sam Carter
+72,510072,R250,MOQ update for bracket BR-55,5/15/2025 16:45,6,North America,Engineering,ECN,Bracket,5/16/2025 8:50,,Sam Carter
+73,510073,R250,PO creation for bracket BR-55,202,,,,,,,,
