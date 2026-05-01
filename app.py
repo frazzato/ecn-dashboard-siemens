@@ -33,37 +33,34 @@ except FileNotFoundError:
     st.error("Data file 'teamcenter_data.csv' not found. Please upload it to your repository.")
     st.stop()
 
-# 4. Advanced Sidebar Filters
-st.sidebar.header("🔍 Search & Filter")
+# 4. Custom Engineered Filters
+st.sidebar.header("🔍 Filters")
 
-# 4a. Global Search Bar
-search_query = st.sidebar.text_input("Search ECN Number or Keyword", "")
+# Global Search
+search_query = st.sidebar.text_input("Search ECN or Keyword", "")
 
-# 4b. Status Toggle (Looks like modern buttons instead of a dropdown)
-status_toggle = st.sidebar.radio(
-    "Quick Status Filter", 
-    ["All Active & Closed", "Open (All Phases)", "Closed"],
-    horizontal=True
-)
-
-# 4c. Expandable Advanced Filters
-with st.sidebar.expander("⚙️ Advanced Parameters", expanded=False):
-    # Program Filter
+# Custom Dropdown for Programs using st.popover
+with st.sidebar.popover("📁 Filter by Program Code", use_container_width=True):
     programs = sorted(df['Program Code'].dropna().unique())
-    selected_programs = st.multiselect("Program Code", programs, default=programs)
+    prog_selections = {}
+    # Create a clean checklist inside the dropdown
+    for prog in programs:
+        prog_selections[prog] = st.checkbox(prog, value=True) # Default all to checked
+    
+    # Extract only the checked items
+    selected_programs = [p for p, is_checked in prog_selections.items() if is_checked]
 
-    # Division Filter
+# Custom Dropdown for Division using st.popover
+with st.sidebar.popover("🏢 Filter by Division", use_container_width=True):
     divisions = sorted(df['Division'].dropna().unique())
-    selected_divisions = st.multiselect("Division", divisions, default=divisions)
+    div_selections = {}
+    for div in divisions:
+        div_selections[div] = st.checkbox(div, value=True)
+        
+    selected_divisions = [d for d, is_checked in div_selections.items() if is_checked]
 
 # --- Apply the Filtering Logic ---
 filtered_df = df.copy()
-
-# Apply Status Toggle
-if status_toggle == "Open (All Phases)":
-    filtered_df = filtered_df[filtered_df['Dashboard_Status'].str.contains('Open')]
-elif status_toggle == "Closed":
-    filtered_df = filtered_df[filtered_df['Dashboard_Status'] == 'Closed']
 
 # Apply Advanced Filters
 filtered_df = filtered_df[
@@ -71,7 +68,6 @@ filtered_df = filtered_df[
     (filtered_df['Division'].isin(selected_divisions))
 ]
 
-# Apply Text Search (checks both ECN Number and Description)
 if search_query:
     filtered_df = filtered_df[
         filtered_df['ECN Number'].astype(str).str.contains(search_query, case=False, na=False) |
