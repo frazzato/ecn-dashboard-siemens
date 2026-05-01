@@ -33,28 +33,50 @@ except FileNotFoundError:
     st.error("Data file 'teamcenter_data.csv' not found. Please upload it to your repository.")
     st.stop()
 
-# 4. Dynamic Sidebar Filters
-st.sidebar.header("Data Filters")
+# 4. Advanced Sidebar Filters
+st.sidebar.header("🔍 Search & Filter")
 
-# Program Filter
-programs = sorted(df['Program Code'].dropna().unique())
-selected_programs = st.sidebar.multiselect("Select Program Code", programs, default=programs)
+# 4a. Global Search Bar
+search_query = st.sidebar.text_input("Search ECN Number or Keyword", "")
 
-# Status Filter (Shows "Closed" and "Open (Phase X)")
-statuses = sorted(df['Dashboard_Status'].unique())
-selected_statuses = st.sidebar.multiselect("Select ECN Status", statuses, default=statuses)
+# 4b. Status Toggle (Looks like modern buttons instead of a dropdown)
+status_toggle = st.sidebar.radio(
+    "Quick Status Filter", 
+    ["All Active & Closed", "Open (All Phases)", "Closed"],
+    horizontal=True
+)
 
-# Division Filter
-divisions = sorted(df['Division'].dropna().unique())
-selected_divisions = st.sidebar.multiselect("Select Division", divisions, default=divisions)
+# 4c. Expandable Advanced Filters
+with st.sidebar.expander("⚙️ Advanced Parameters", expanded=False):
+    # Program Filter
+    programs = sorted(df['Program Code'].dropna().unique())
+    selected_programs = st.multiselect("Program Code", programs, default=programs)
 
-# Apply Filters
-filtered_df = df[
-    (df['Program Code'].isin(selected_programs)) &
-    (df['Dashboard_Status'].isin(selected_statuses)) &
-    (df['Division'].isin(selected_divisions))
+    # Division Filter
+    divisions = sorted(df['Division'].dropna().unique())
+    selected_divisions = st.multiselect("Division", divisions, default=divisions)
+
+# --- Apply the Filtering Logic ---
+filtered_df = df.copy()
+
+# Apply Status Toggle
+if status_toggle == "Open (All Phases)":
+    filtered_df = filtered_df[filtered_df['Dashboard_Status'].str.contains('Open')]
+elif status_toggle == "Closed":
+    filtered_df = filtered_df[filtered_df['Dashboard_Status'] == 'Closed']
+
+# Apply Advanced Filters
+filtered_df = filtered_df[
+    (filtered_df['Program Code'].isin(selected_programs)) &
+    (filtered_df['Division'].isin(selected_divisions))
 ]
 
+# Apply Text Search (checks both ECN Number and Description)
+if search_query:
+    filtered_df = filtered_df[
+        filtered_df['ECN Number'].astype(str).str.contains(search_query, case=False, na=False) |
+        filtered_df['Description'].astype(str).str.contains(search_query, case=False, na=False)
+    ]
 # 5. High-Level Engineering Metrics
 st.subheader("ECN Overview")
 col1, col2, col3, col4 = st.columns(4)
