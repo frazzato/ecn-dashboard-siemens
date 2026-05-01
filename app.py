@@ -12,7 +12,7 @@ def load_and_clean_data():
     df = pd.read_csv("teamcenter_data.csv")
     df.columns = df.columns.str.strip()
     
-    # 🌟 NEW: Dictionary Mapping for Human-Readable Phase Names
+    # Dictionary Mapping for Human-Readable Phase Names
     phase_mapping = {
         '-2': 'Engineering',
         '-1': 'Engineering',
@@ -26,15 +26,12 @@ def load_and_clean_data():
     
     def determine_status(level):
         lvl_str = str(level).strip()
-        # Apply the descriptive name if it exists in our map, else fallback to "Phase X"
         if lvl_str in phase_mapping:
             return phase_mapping[lvl_str]
         else:
             return f"Phase {lvl_str}"
             
     df['Dashboard_Status'] = df['Status Lvl'].apply(determine_status)
-    
-    # Core Rule remains strictly enforced: Only 'Closed' (Level 8) is fully closed.
     df['Primary_Status'] = df['Dashboard_Status'].apply(lambda x: 'Closed' if x == 'Closed' else 'Open')
     
     # Cycle Time Logic
@@ -135,3 +132,19 @@ st.divider()
 st.subheader("ECN Tracking Log")
 columns_to_display = ['ECN Number', 'Program Code', 'Dashboard_Status', 'Days Open', 'Description', 'Division', 'Owner']
 st.dataframe(filtered_df[columns_to_display], use_container_width=True, hide_index=True)
+
+st.divider()
+
+# 6. Export Functionality (NEW)
+st.markdown("### 📥 Export Report")
+st.write("Download the currently filtered ECN log for offline reporting.")
+
+# Convert the currently filtered dataframe to CSV
+csv_data = filtered_df.to_csv(index=False).encode('utf-8')
+
+st.download_button(
+    label="Download Filtered Data as CSV",
+    data=csv_data,
+    file_name='TeamCenter_ECN_Report.csv',
+    mime='text/csv',
+)
